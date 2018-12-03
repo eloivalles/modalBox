@@ -1,6 +1,8 @@
 import '../styles/index.scss';
 
-function ajaxCall(url) {
+window.utils = window.utils || {};
+
+window.utils.ajaxCall = (url) => {
     return new Promise(function(resolve, reject) {
       var req = new XMLHttpRequest();
       req.open('GET', url);
@@ -17,9 +19,9 @@ function ajaxCall(url) {
       };
       req.send();
     });
-}
+};
 
-(function(){
+(() =>{
     class modalModule {
         constructor () {
             this.btElement = document.getElementById('btModal');
@@ -60,13 +62,11 @@ function ajaxCall(url) {
 
         // Get test data from https://jsonplaceholder.typicode.com/
         LoadData() {
-            ajaxCall('https://jsonplaceholder.typicode.com/todos/1')
-            // .then(response => response.json())
+            window.utils.ajaxCall('https://jsonplaceholder.typicode.com/todos/1')
             .then(task => {
                 this.task = task;
-                return ajaxCall('https://jsonplaceholder.typicode.com/users/' + task.userId);
+                return window.utils.ajaxCall('https://jsonplaceholder.typicode.com/users/' + task.userId);
             })
-            // .then(response => response.json())
             .then(user => {
                 this.user = user;
                 this.fillModal();
